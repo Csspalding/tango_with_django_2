@@ -7,4 +7,5 @@ app_name = 'rango'
 
 urlpatterns = [
     path('', views.index, name='index'), #this url points to the index view function
+    path('about', views.about, name='about'),
 ]
