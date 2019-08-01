@@ -1,0 +1,12 @@
+{
+  "cSpell.words": [
+      "dynamodb"
+  ],
+
+  "python.linting.pylintArgs": [
+      "--load-plugins",
+      "pylint_django"
+  ],
+  "python.jediEnabled": true
+  
+}
