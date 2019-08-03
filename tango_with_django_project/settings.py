@@ -16,9 +16,11 @@ import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-#added this templated variable to join base dir variable with newly created templates directories
+#template dir variable to join base dir so Django knows where to find my templates
 TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates')
 
+#static dir variable so Django knows where to find my static media and images
+STATIC_DIR = os.path.join(BASE_DIR, 'static')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
@@ -61,7 +63,6 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS':[TEMPLATE_DIR,],
         'APP_DIRS': True,
-
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
@@ -124,4 +125,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILES_DIRS = [STATIC_DIR]
 
+# MEDIA_DIR = os.path.join(BASE_DIR, 'media')
+# MEDIA_ROOT = MEDIA_DIR
+# MEDIA_URL = '/media/'
