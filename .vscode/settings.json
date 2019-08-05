@@ -14,6 +14,7 @@
     "**/templates/*": "django-txt",
     "**/requirements{/**,*}.{txt,in}": "pip-requirements"},
     
+    
   // "emmet.includeLanguages": { "javascript": "javascriptreact", },
   "emmet.includeLanguages": {"django-html": "html"},
   // "emmet.syntaxProfiles": {

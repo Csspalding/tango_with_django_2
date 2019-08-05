@@ -18,7 +18,5 @@ def index(request):
  
 def about(request):
   context_dict={'boldmessage': 'This tutorial has been put together by Cassie'}
-
-  #return HttpResponse("Rango says here is the about page. <a href='/rango/'>Index</a>")
   return render(request, 'rango/about.html', context=context_dict)
 #now mapp your Url to the view
