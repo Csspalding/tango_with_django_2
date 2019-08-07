@@ -1,8 +1,9 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 
-from rango.models import Category, Page
-
+from rango.models import Category
+from rango.models import Page
+from rango.forms import CategoryForm
 # Create your views here.
 #index view is the home page for the project
 #view handles responce to request from client
@@ -11,15 +12,14 @@ from rango.models import Category, Page
 def index(request):
   #To test return HttpResponse("Rango says hey there partner! <a href='/rango/about'>About</a>")
 
-  #query db for a list of ALL categories stored, ordered by likes in -decending order limit to 5
+  #query db for a list of ALL categories stored, ordered by likes in -decending order limit display to 5
   category_list = Category.objects.order_by('-likes')[:5]
-
-
-  #construct a dictionary to pass to the template engin as its context.
-  #Note the key boldmessage is the dame as {{boldmessage}} in the template
-  context_dict = {}
-  context_dict['boldmessage']='Crunchy, creamy, cookie, candy, cupcake!'
-  context_dict['categories'] = category_list
+  page_list = Page.objects.order_by('views')[:5]
+  
+  #construct a dictionary to pass to the template engine as its context.
+  context_dict = {}#initialise dictionary
+  context_dict ['categories' ]=category_list
+  context_dict ['pages' ]=page_list
   #return a rendered responce to send to the client
   #make use of shortcut function 
   return render(request, 'rango/index.html', context=context_dict)
@@ -51,3 +51,23 @@ def show_category(request, category_name_slug):#stores encoded category name
     context_dict['category']= None 
   #render the request as a responce to the client
   return render(request, 'rango/category.html', context=context_dict)
+
+#this method saves user data into a form
+def add_category(request):
+    form = CategoryForm()
+
+    if request.method =='POST':
+      form = CategoryForm(request.POST)
+
+    #if a valid new form is returned above
+    if form.is_valid():
+      #Save the new form to the db
+      form.save(commit=True)
+      #place a confirmation messge next if nec //not this time
+      #instead in this case the most recent category added is on the index page we redirect to index page
+      return index(request)
+    else:
+      #error in form so print them to terminal //todo in html template handle the bad form or no form case
+      return render(request, 'rango/add_category.html', {'form': form})
+
+
