@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+{% load staticfiles %}<!-- New line -->
+<html lang="en">
+  <head>
+    <meta charset="UTF-8"/>
+    <title>Rango -
+     {% block title_block %}
+      How to Tango with Django!
+     {% endblock %}
+     </title>
+  </head>
+
+    <body>
+    <div>
+        {% comment %} page specific content goes in the block, you can create one for title, header, footer, sidebare {% endcomment %}
+      {% block body_block%}
+      {% endblock %}
+    </div>
+    {% comment %} horizontal rule hr / tag seperates thematic change of content between body and links {% endcomment %}
+    <hr/>
+    <div> 
+      <ul>
+          <li> <a href="{% url 'rango:add_category' %}">Add New Category</a></li> 
+          <li> <a href="{% url 'rango:about' %}">About</a></li> 
+          <li> <a href="{% url 'rango:index' %}">Index</a></li> 
+      </ul>
+    </div>
+    </body>
+  
+</html>
+  

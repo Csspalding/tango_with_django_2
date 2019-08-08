@@ -1,9 +1,12 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.shortcuts import redirect
+from django.shortcuts import reverse
 
 from rango.models import Category
 from rango.models import Page
 from rango.forms import CategoryForm
+from rango.forms import PageForm
 # Create your views here.
 #index view is the home page for the project
 #view handles responce to request from client
@@ -18,6 +21,7 @@ def index(request):
   
   #construct a dictionary to pass to the template engine as its context.
   context_dict = {}#initialise dictionary
+  context_dict['boldmessage']='Crunchy, creamy, cookie, candy, cupcake!'
   context_dict ['categories' ]=category_list
   context_dict ['pages' ]=page_list
   #return a rendered responce to send to the client
@@ -61,13 +65,42 @@ def add_category(request):
 
     #if a valid new form is returned above
     if form.is_valid():
-      #Save the new form to the db
-      form.save(commit=True)
+      #Save the new form to the db, reference cat is the instance of the category object created by the form
+      cat = form.save(commit=True)
+      print(cat,cat.slug)#prints the category to the console 
       #place a confirmation messge next if nec //not this time
       #instead in this case the most recent category added is on the index page we redirect to index page
       return index(request)
     else:
       #error in form so print them to terminal //todo in html template handle the bad form or no form case
       return render(request, 'rango/add_category.html', {'form': form})
+
+
+def add_page(request, category_name_slug):
+  try:
+    category = Category.objects.get(slug=category_name_slug)
+  except Category.DoesNotExist:
+    category = None
+
+  form = PageForm()
+  if request.method =='POST':
+    form = PageForm(request.POST)
+
+    if form.is_valid():
+      if category:
+        page = form.save(commit=False)
+        page.category = category
+        page.view =0
+        page.save()
+    #once page form is created redirect user to the show_category() view
+    #if a match is found from show_category ()the complete url is returned
+    #as an added complication show_category(category_name_slug) passed in parameter
+    #by providing a value in dictionary as kwargs to the reverse() it can formulate the url
+        return redirect(reverse('rango:show_category',kwargs={'category_name_slug':category_name_slug}))
+    else:
+      print (form.errors)
+  context_dict = {'form':form, 'category':category} #objects passed through the template context dictionary to the html
+  return render(request, 'rango/add_page.html',context=context_dict)
+
 
 

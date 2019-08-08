@@ -20,12 +20,13 @@ def populate():
 	other_pages = [
 		{"title":"Bottle", "url":"http://bottlepy.org/docs/dev/","views":5}, 
 		{"title":"Flask", "url":"http://flask.pocoo.org","views":7} ]
-
+		
 
 #categories dictionary of dictionaries lists above 
 	cats = {"Python": {"pages": python_pages, 'views':128, 'likes':64}, 
 			"Django": {"pages": django_pages,'views':64, 'likes':32 }, 
-			"Other Frameworks": {"pages": other_pages,'views':132, 'likes':16} }
+			"Other Frameworks": {"pages": other_pages,'views':132, 'likes':16}
+			}
       
 #loop through cats dictionary add each category then add all the associated pages for that category
 
