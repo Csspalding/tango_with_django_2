@@ -1,15 +1,14 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from django.shortcuts import redirect
-from django.shortcuts import reverse
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 
-from rango.models import Category
-from rango.models import Page
-from rango.forms import CategoryForm
-from rango.forms import PageForm
-from rango.forms import UserForm
-from rango.forms import UserProfileForm
-# Create your views here.
+from django.urls import reverse
+from rango.models import Category, Page
+from rango.forms import CategoryForm, PageForm, UserForm, UserProfileForm
+
+
+
 #index view is the home page for the project
 #view handles responce to request from client
 
@@ -130,4 +129,42 @@ def register(request):
     profile_form = UserProfileForm() 
   return render (request,'rango/register.html', {'user_form': user_form,'profile_form': profile_form,'registered': registered})
 
+def user_login(request):
+  #is HTTP POST try to pull out relevant info
+  if request.method=='POST':
+    #gather username and password
+    username = request.POST.get('username')
+    password = request.POST.get('password')
+  #Django checks to see if it is valid, returns user object if it is valid
+    user = authenticate(username=username, password=password)
+#If None no user was found
+    if user:
+
+      if user.is_active:
+        login(request, user)
+        return redirect(reverse('rango:index'))
+      else:
+      #an inactive account was used - no login is provided
+        return HttpResponce("Your Rango account is disabled.")
+    else:
+    #bad login detials were provided so login fails
+      print("Invalid login details: {0}, {1}" .format(username, password))
+      return HttpResponse("Invalid login details supplied")
+#request is not HTTP POST so display the login form  - HTTP GET    
+  else:
+  #no content variables to pass into the template
+    return render(request, 'rango/login.html') 
+
+#Django decorator is a function, it checks user.is_authenticated() and the user object is passed to the view
+@login_required
+def restricted(request):
+  #return HttpResponse("Since you're logged in, you can see this text!")
+ return render(request, 'rango/restricted.html') 
+
+@login_required
+def user_logout(request):
+  #as we know the user is logged in, this only will appear on a restriced page
+  logout(request)
+  #redirect user to the homepate
+  return redirect(reverse('rango:index'))
 

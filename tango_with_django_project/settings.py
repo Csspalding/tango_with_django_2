@@ -35,6 +35,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+#I added this for users who are not logged in trying to access restricted pages via Django @login_required decorator
+LOGIN_URL = 'rango:login'
 
 # Application definition
 
@@ -76,10 +78,11 @@ TEMPLATES = [
         },
     },
 ]
-#I added this from link below
-TEMPLATE_LOADERS = (
-    'django.template.loaders.app_directories.load_template_source',
-)
+
+#I added this from link below run migrate again and see if it's needed for the sidebar??
+# TEMPLATE_LOADERS = (
+#     'django.template.loaders.app_directories.load_template_source',
+# )
 #https://stackoverflow.com/questions/1483927/problem-loading-custom-template-tags-error-no-module-named-x
 
 WSGI_APPLICATION = 'tango_with_django_project.wsgi.application'

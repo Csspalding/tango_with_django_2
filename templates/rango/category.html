@@ -21,9 +21,10 @@
         {% else %}
           <strong>No pages currently in category.</strong>
         {% endif %}
-            {% comment %} <a href="/rango/category/{{category.slug}}/add_page/">Add Page</a> {% endcomment %}
-         <a href="{% url 'rango:add_page' category.slug %}">Add a Page</a>
+            {% if user.is_authenticated %}
+                <a href="{% url 'rango:add_page' category.slug %}">Add a Page</a>
   {% comment %} category.slug is passed thorugh as a parameter to the url template tag {% endcomment %}
+            {% endif %}
     {% else %}
           The specified category does not exist!
     {% endif %}

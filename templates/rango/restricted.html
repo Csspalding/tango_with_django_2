@@ -1,0 +1,12 @@
+{% extends 'rango/base.html' %}
+
+{% block title_block %}
+  Restricted  
+{% endblock %}
+
+{% block body_block %}
+<h1>This is the restricted page</h1>
+      {% if user.is_authenticated %}
+          <li> <a href="{% url 'admin:login' %}">Admin Page</a></li> 
+  {% endif %}
+  {% endblock %}
