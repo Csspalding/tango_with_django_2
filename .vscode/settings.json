@@ -7,7 +7,7 @@
       "--load-plugins",
       "pylint_django"
   ],
-  "python.jediEnabled": true,
+  "python.jediEnabled": false,
 
   "files.associations": {
     "**/templates/*.html": "django-html",
@@ -16,7 +16,10 @@
     
     
   // "emmet.includeLanguages": { "javascript": "javascriptreact", },
-  "emmet.includeLanguages": {"django-html": "html"},
+  "emmet.includeLanguages": {
+    "django-html": "html"
+  },
+  "python.pipenvPath": "C:\\Users\\Cassie\\Envs\\rangenv",
   // "emmet.syntaxProfiles": {
   //   "typescript": "html"
   // }

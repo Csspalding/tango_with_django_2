@@ -7,6 +7,8 @@ from rango.models import Category
 from rango.models import Page
 from rango.forms import CategoryForm
 from rango.forms import PageForm
+from rango.forms import UserForm
+from rango.forms import UserProfileForm
 # Create your views here.
 #index view is the home page for the project
 #view handles responce to request from client
@@ -29,8 +31,12 @@ def index(request):
   return render(request, 'rango/index.html', context=context_dict)
  
 def about(request):
-  context_dict={'boldmessage': 'This tutorial has been put together by Cassie'}
-  return render(request, 'rango/about.html', context=context_dict)
+  #print out if GET or POST request
+  print (request.method)
+  #prints out username if none logged in prints'anonymousUser'
+  print(request.user)
+  context ={'boldmessage': 'This tutorial has been put together by Cassie'}
+  return render(request, 'rango/about.html', context)#third parameter not needed as empty context dictionary
 #now mapp your Url to the view
 
 def show_category(request, category_name_slug):#stores encoded category name
@@ -39,10 +45,10 @@ def show_category(request, category_name_slug):#stores encoded category name
   try:
     # get () returns DoesNotExist // try/catch  handles exception if no categories exist
     # or returns a model instance
-    category = Category.objects.get(slug=category_name_slug)
+    category= Category.objects.get(slug=category_name_slug)
 
     #filter()  will return a list of page objects or an empty list
-    pages = Page.objects.filter(category=category)
+    pages= Page.objects.filter(category=category)
 
     #Saves results from filter() to template context under name pages
     context_dict['pages'] = pages
@@ -102,5 +108,26 @@ def add_page(request, category_name_slug):
   context_dict = {'form':form, 'category':category} #objects passed through the template context dictionary to the html
   return render(request, 'rango/add_page.html',context=context_dict)
 
+def register(request):
+  registered = False
+  if request.method == 'POST':
+    user_form = UserForm(data=request.POST)
+    profile_form = UserProfileForm(data=request.POST)
+    if user_form.is_valid() and profile_form.is_valid():
+      user = user_form.save()
+      user.set_password(user.password)
+      user.save()
+      profile = profile_form.save(commit=False)
+      profile.user = user
+      if 'picture' in request.FILES:
+        profile.picture = request.FILES['picture']
+      profile.save()
+      registered = True
+    else:
+      print(user_form.errors, profile_form.errors) 
+  else: 
+    user_form = UserForm()
+    profile_form = UserProfileForm() 
+  return render (request,'rango/register.html', {'user_form': user_form,'profile_form': profile_form,'registered': registered})
 
 

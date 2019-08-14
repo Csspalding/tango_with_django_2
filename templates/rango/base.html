@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-{% load staticfiles %}<!-- New line -->
+{% load staticfiles %}
+{% load rango_template_tags %}
 <html lang="en">
   <head>
     <meta charset="UTF-8"/>
@@ -16,6 +17,12 @@
       {% block body_block%}
       {% endblock %}
     </div>
+     <div>
+     {% comment %} uses the templatetag rango_template_tags {% endcomment %}
+        {% block sidebar_block%}
+            {% get_category_list category %}
+         {% endblock %}
+    </div>
     {% comment %} horizontal rule hr / tag seperates thematic change of content between body and links {% endcomment %}
     <hr/>
     <div> 
@@ -23,6 +30,7 @@
           <li> <a href="{% url 'rango:add_category' %}">Add New Category</a></li> 
           <li> <a href="{% url 'rango:about' %}">About</a></li> 
           <li> <a href="{% url 'rango:index' %}">Index</a></li> 
+          <li> <a href="{% url 'rango:register' %}">Sign Up</a></li> 
       </ul>
     </div>
     </body>

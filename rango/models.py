@@ -1,5 +1,6 @@
 from django.db import models
 from django.template.defaultfilters import slugify
+from django.contrib.auth.models import User
 
 
 # Create your models here, which make tables and relationships in the database
@@ -35,3 +36,19 @@ class Page(models.Model):
 
     def __str__(self):
         return self.title
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    website = models.URLField(blank=True)
+    picture = models.ImageField(upload_to='profile_images' , blank=True)
+
+    # class Meta:
+    #     verbose_name = _("")
+    #     verbose_name_plural = _("s")
+
+    def __str__(self):
+        return self.user.username
+
+    # def get_absolute_url(self):
+    #     return reverse("_detail", kwargs={"pk": self.pk})
+

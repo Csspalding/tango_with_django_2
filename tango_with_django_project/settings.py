@@ -76,6 +76,11 @@ TEMPLATES = [
         },
     },
 ]
+#I added this from link below
+TEMPLATE_LOADERS = (
+    'django.template.loaders.app_directories.load_template_source',
+)
+#https://stackoverflow.com/questions/1483927/problem-loading-custom-template-tags-error-no-module-named-x
 
 WSGI_APPLICATION = 'tango_with_django_project.wsgi.application'
 
